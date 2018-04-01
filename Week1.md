@@ -14,5 +14,5 @@ Implement:
 * FizzBuzz
 * Recursive Factorial
 * Pythonic Factorial
-* Date Conversion
+* Grinnell Email
 * Basic Chatbot
