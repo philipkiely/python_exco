@@ -20,7 +20,7 @@ def recfactorial(n):
 #calculate n! using range
 def pyfactorial(n):
     ret = 1
-    for i in range(1, (n + 1):
+    for i in range(1, (n + 1)):
         ret *= i
     return ret
 
