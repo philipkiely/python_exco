@@ -1,5 +1,7 @@
 import statsmodels.formula.api as smf
 import pandas
+from sklearn.linear_model import LogisticRegression
+
 
 #impute ages using given predictors and coefficients
 def age_predictor(predictors, parameter_dictionary):
@@ -35,18 +37,31 @@ def fill_missing_ages(df):
 def clean_data(df):
     df = df.drop(['ticket', 'name', 'embarked', 'cabin'], 1)
     df = fill_missing_ages(df)
+    sex = pandas.get_dummies(df['sex'], drop_first=True)
+    df[['sex']] = sex
+    df.dropna(inplace=True)
     return df
 
 #create a logistic regression object
 def make_logistic_regression(df):
-    pass
+    response = df['survived']
+    predictors = df[['pclass', 'sex', 'age', 'sibsp', 'parch', 'fare']]
+    Regression = LogisticRegression()
+    Regression.fit(predictors, response)
+    return Regression
 
 #use the logistic regression object to predict passenger survival
-def predict_survival(train, test):
-    pass
+def predict_survival(test, Regression):
+    test['survived'] = Regression.predict(test.values)
+    return test
 
 if __name__ == "__main__":
     train = pandas.read_csv("data/train.csv")
     test = pandas.read_csv("data/test.csv")
     train = clean_data(train)
     test = clean_data(test)
+    Regression = make_logistic_regression(train)
+    test = predict_survival(test, Regression)
+    
+    
+    
